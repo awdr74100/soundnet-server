@@ -1,4 +1,5 @@
-const ws = new WebSocket('ws://soundnet-server.herokuapp.com');
+
+const ws = new WebSocket('ws://localhost:3000');
 
 
 ws.addEventListener('open', () => {
@@ -27,7 +28,7 @@ uploadBtn.addEventListener('click', async (e) => {
   });
 
   try {
-    const data = await fetch('https://soundnet-server.herokuapp.com/api/sounds', {
+    const data = await fetch('http://localhost:3000/api/sounds', {
       method: 'POST',
       body: formData,
     }).then((res) => res.json());
