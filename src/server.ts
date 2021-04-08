@@ -17,4 +17,14 @@ wss.on('listening', () => {
 
 wss.on('connection', () => {
   console.log(`Online users: ${wss.clients.size}`);
+
+  setInterval(() => {
+    wss.clients.forEach((client) => {
+      client.send(
+        JSON.stringify({
+          type: ['ping'],
+        }),
+      );
+    });
+  }, 25000);
 });
