@@ -7,15 +7,17 @@ interface UserPayload {
   displayName: string;
   soundId: string;
   features: string[];
+  door: string;
 }
 
 interface VerifyPayload {
   soundId: string;
   hash: string;
+  door: string;
 }
 
 export const call = (req: Request, res: Response): void => {
-  const { uid, soundId } = req.body as UserPayload;
+  const { uid, soundId, door } = req.body as UserPayload;
   const { wss } = req.app;
 
   wss.clients.forEach((client) => {
@@ -26,6 +28,7 @@ export const call = (req: Request, res: Response): void => {
         body: {
           uid,
           soundId,
+          door,
         },
       }),
     );
@@ -35,7 +38,7 @@ export const call = (req: Request, res: Response): void => {
 };
 
 export const verify = async (req: Request, res: Response): Promise<void> => {
-  const { soundId, hash } = req.body as VerifyPayload;
+  const { soundId, hash, door } = req.body as VerifyPayload;
   const { wss } = req.app;
 
   try {
@@ -51,7 +54,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
       client.send(
         JSON.stringify({
           title: ' WebSockets broadcast',
-          target: ['door'],
+          target: [`${door}`],
         }),
       );
     });
